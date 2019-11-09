@@ -1,0 +1,200 @@
+basePath: /api/v1
+definitions:
+  controller.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+  model.Account:
+    properties:
+      age:
+        default: 10
+        description: 年龄
+        example: 10
+        maximum: 150
+        minimum: 1
+        type: integer
+      height:
+        description: 身高,单位米
+        example: 1.8
+        maximum: 9.99
+        minimum: 0
+        type: number
+      name:
+        description: 用户名
+        example: Tom
+        format: string
+        maxLength: 16
+        minLength: 1
+        type: string
+      status:
+        description: 状态
+        enum:
+        - healthy
+        - ill
+        type: string
+    required:
+    - age
+    - height
+    - name
+    - status
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server demo server.
+  license: {}
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /accounts:
+    get:
+      consumes:
+      - application/json
+      description: 账户列表
+      parameters:
+      - description: 状态
+        format: string
+        in: query
+        name: status
+        type: string
+      - default: 0
+        description: 偏移
+        in: query
+        minimum: 0
+        name: offset
+        required: true
+        type: integer
+      - default: 10
+        description: 限制
+        in: query
+        maximum: 50
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Account'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: List accounts
+      tags:
+      - accounts
+    post:
+      consumes:
+      - application/json
+      description: 新增账户
+      parameters:
+      - description: Add account
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.Account'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Add a account
+      tags:
+      - accounts
+  /accounts/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除账户
+      parameters:
+      - description: 账户名
+        format: string
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/model.Account'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Delete a account
+      tags:
+      - accounts
+    get:
+      consumes:
+      - application/json
+      description: 根据name获取账户Account
+      parameters:
+      - default: '""'
+        description: Account name
+        in: path
+        maxLength: 50
+        minLength: 1
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.HTTPError'
+      summary: Get a account
+      tags:
+      - accounts
+swagger: "2.0"

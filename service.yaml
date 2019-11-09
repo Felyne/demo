@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bmk-demo
+  namespace: NAMESPACE
+  labels:
+    env: NAMESPACE
+    app: bmk-demo
+spec:
+  selector:
+    env: NAMESPACE
+    app: bmk-demo
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

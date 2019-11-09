@@ -1,0 +1,8 @@
+[[Confs]]
+Name="default"
+MustConn=true
+
+[Confs.Options]
+Addr="192.168.41.140:6379"
+Password="bmk654321"
+DB=1

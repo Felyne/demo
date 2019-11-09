@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmk-demo
+  namespace: NAMESPACE
+  labels:
+    env: NAMESPACE
+    app: bmk-demo
+spec:
+  selector:
+    matchLabels:
+      env: NAMESPACE
+      app: bmk-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        env: NAMESPACE
+        app: bmk-demo
+    spec:
+       containers:
+        - name: bmk-demo
+          image: 192.168.41.34/devops/bmk-demo:VERSION
+          imagePullPolicy: Always
+          command: [ "/app/app" ]
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          volumeMounts:
+          - name: config-vol
+            mountPath: /app/config/test.toml
+            subPath: test.toml
+            readOnly: true
+          - name: redis-config-vol
+            mountPath: /app/config/redis.toml
+            subPath: redis.toml
+            readOnly: true
+          env:
+          - name: APP_CONF_DIR
+            value: /app/config
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 2
+       volumes:
+       - name: config-vol
+         configMap:
+           name: bmk-demo
+       - name: redis-config-vol
+         secret:
+           secretName: redis-toml
