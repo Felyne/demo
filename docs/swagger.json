@@ -94,7 +94,6 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/model.Account"
                         }
                     }
@@ -243,6 +242,7 @@
             "type": "object",
             "required": [
                 "age",
+                "email",
                 "height",
                 "name",
                 "status"
@@ -256,6 +256,10 @@
                     "minimum": 1,
                     "example": 10
                 },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
                 "height": {
                     "description": "身高,单位米",
                     "type": "number",
@@ -264,7 +268,7 @@
                     "example": 1.8
                 },
                 "name": {
-                    "description": "用户名",
+                    "description": "备注: 姓名",
                     "type": "string",
                     "format": "string",
                     "maxLength": 16,

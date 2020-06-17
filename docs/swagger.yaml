@@ -18,6 +18,9 @@ definitions:
         maximum: 150
         minimum: 1
         type: integer
+      email:
+        description: 邮箱
+        type: string
       height:
         description: 身高,单位米
         example: 1.8
@@ -25,7 +28,7 @@ definitions:
         minimum: 0
         type: number
       name:
-        description: 用户名
+        description: '备注: 姓名'
         example: Tom
         format: string
         maxLength: 16
@@ -39,6 +42,7 @@ definitions:
         type: string
     required:
     - age
+    - email
     - height
     - name
     - status
@@ -108,7 +112,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/model.Account'
-          type: object
       produces:
       - application/json
       responses:

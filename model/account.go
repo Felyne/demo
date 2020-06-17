@@ -10,12 +10,15 @@ var (
 	ErrNoRow       = errors.New("no rows in result set")
 )
 
+// 参考: https://godoc.org/gopkg.in/go-playground/validator.v8#hdr-Baked_In_Validators_and_Tags
 // Account example
 type Account struct {
-	Name   string  `json:"name" example:"Tom" format:"string" binding:"required" minLength:"1" maxLength:"16"` // 用户名
-	Age    int     `json:"age" example:"10" binding:"required" minimum:"1" maximum:"150" default:"10"`         // 年龄
-	Height float64 `json:"height" example:"1.80" binding:"required" minimum:"0.0" maximum:"9.99"`              // 身高,单位米
-	Status string  `json:"status" enums:"healthy,ill" binding:"required"`                                      // 状态
+	//备注: 姓名
+	Name   string  `form:"name" json:"name" example:"Tom" format:"string" binding:"required,min=1,max=16" minLength:"1" maxLength:"16" validate:"max=10,min=1"` // 用户名
+	Age    int     `json:"age" example:"10" binding:"required,gte=1,lte=150" minimum:"1" maximum:"150" default:"10"`                                            // 年龄
+	Height float64 `form:"height" json:"height" example:"1.80" binding:"required" minimum:"0.0" maximum:"9.99"`                                                 // 身高,单位米
+	Status string  `form:"status" json:"status" enums:"healthy,ill" binding:"required"`                                                                         // 状态
+	Email  string  `form:"email" json:"email" binding:"required,email"`                                                                                         //邮箱
 }
 
 var accounts = []Account{
